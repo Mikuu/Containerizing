@@ -1,0 +1,69 @@
+version: "3.7"
+services:
+
+#  vcer-mongo:
+#    image: mongo:latest
+#    networks:
+#      - vcer-backend-network
+#
+#  vcer-zookeeper:
+#    image: wurstmeister/zookeeper
+#    ports:
+#      - "2181:2181"
+#    networks:
+#      - vcer-backend-network
+#
+#  vcer-kafka:
+#    image: wurstmeister/kafka:latest
+#    ports:
+#      - target: 9094
+#        published: 9094
+#        protocol: tcp
+#        mode: host
+#    environment:
+##      HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+#      KAFKA_ZOOKEEPER_CONNECT: vcer-zookeeper:2181
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+#      #      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9094,OUTSIDE://_{HOSTNAME_COMMAND}:9092
+#      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://10.206.20.120:9094
+#      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+#      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:cached
+#    networks:
+#      - vcer-backend-network
+
+  vcer-master:
+    image: sandbox-vcer-master:0.0.1
+    ports:
+      - "8000:8000"
+    networks:
+      - vcer-backend-network
+
+  vcer-slave:
+    image: sandbox-vcer-slave:0.0.1
+    networks:
+      - vcer-backend-network
+
+  vcer-storage:
+    image: sandbox-vcer-storage:0.0.1
+    volumes:
+      - type: volume
+        source: vcer-storage-volume
+        target: /vcer-storage
+        consistency: cached
+    networks:
+      - vcer-backend-network
+
+  vcer-authorizer:
+    image: sandbox-vcer-authorizer:0.0.1
+    ports:
+      - "8004:8004"
+    networks:
+      - vcer-backend-network
+
+networks:
+  vcer-backend-network:
+
+volumes:
+  vcer-storage-volume:
