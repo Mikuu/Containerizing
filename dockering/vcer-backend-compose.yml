@@ -4,7 +4,7 @@ services:
   vcer-master:
     image: sandbox-vcer-master:0.0.1
     ports:
-      - "8000:8000"
+      - "8100:8100"
     networks:
       - vcer-backend-network
 
@@ -16,7 +16,7 @@ services:
   vcer-storage:
     image: sandbox-vcer-storage:0.0.1
     ports:
-      - "8002:8002"
+      - "8102:8102"
     volumes:
       - type: volume
         source: vcer-storage-volume

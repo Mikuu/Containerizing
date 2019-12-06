@@ -7,6 +7,8 @@ services:
       - "27017:27017"
     networks:
       - vcer-infrastructure-network
+    volumes:
+      - "./mount-volume/mongo-volume:/data/db"
 
   vcer-zookeeper:
     image: wurstmeister/zookeeper
@@ -27,7 +29,8 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: vcer-zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       #      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9094,OUTSIDE://_{HOSTNAME_COMMAND}:9092
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9094,OUTSIDE://10.206.20.120:9092
+#      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://10.206.20.120:9094
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9094,OUTSIDE://localhost:9092
       KAFKA_LISTENERS: INSIDE://:9094,OUTSIDE://:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
     volumes:
