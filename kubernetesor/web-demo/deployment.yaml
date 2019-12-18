@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: md-dashboard-deployment
+  name: web-demo
 spec:
   selector:
     matchLabels:
-      app: md-dashboard
-  replicas: 2
+      app: web-demo
+  replicas: 1
   template:
     metadata:
       labels:
-        app: md-dashboard
+        app: web-demo
     spec:
       containers:
-        - name: md-dashboard
-          image: registry.ariman.com:5000/md-dashboard
+        - name: web-demo
+          image: registry.ariman.com:5000/web-demo
           ports:
-            - containerPort: 3001
+            - containerPort: 8080
       imagePullSecrets:
         - name: ariman-registry-secret

@@ -86,3 +86,12 @@
 ```commandline
 > docker pull registry.ariman.com:5000/alpine
 ```
+
+##### for Kubernetes using self generated Registry
+create imagePullSecret
+```commandline
+kubectl create secret docker-registry <name> --docker-server=DOCKER_REGISTRY_SERVER --docker-username=DOCKER_USER --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL
+
+# e.g.
+kubectl create secret docker-registry ariman-registry-secret --docker-server=registry.ariman.com:5000 --docker-username=testuser --docker-password=testpassword --docker-email=biaofu@thougtworks.com
+```
