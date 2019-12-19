@@ -58,6 +58,12 @@ create a ingress source to expose the application
 
 ##### with kubernetes-ingress controller
 
+- as the similar with above, find the service ( which expose kubernetes-ingress controller) node port, marked as <nodePort>,
+```commandline
+> kubectl get service -n nginx-ingress
+```
+
+- the rest steps are all the same as above with ingress-nginx controller, just repeat them.
 
  
 
