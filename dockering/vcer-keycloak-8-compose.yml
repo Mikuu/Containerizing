@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - "./mount-volume/mysql-volume/keycloak-8:/var/lib/mysql"
+    networks:
+      - vcer-keycloak-network-8
+
+  vcer-keycloak:
+    image: jboss/keycloak:8.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Password1
+    networks:
+      - vcer-keycloak-network-8
+
+networks:
+  vcer-keycloak-network-8:

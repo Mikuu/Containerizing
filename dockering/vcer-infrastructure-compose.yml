@@ -33,6 +33,14 @@ services:
       KAFKA_ADVERTISED_LISTENERS: INSIDE://:9094,OUTSIDE://localhost:9092
       KAFKA_LISTENERS: INSIDE://:9094,OUTSIDE://:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CREATE_TOPICS: "tpk-mcCompareCompleted:1:1,\
+      tpk-mcCompareHarvested:1:1,\
+      tpk-csNewTask:3:1,\
+      tpk-csHarvested:1:1,\
+      tpk-csTaskTender:1:1,\
+      tpk-csTaskAssigned:3:1,\
+      tpk-csTaskAccepted:1:1,\
+      tpk-csTaskCompleted:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:cached
     networks:
