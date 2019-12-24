@@ -1,15 +1,14 @@
 version: "3.7"
 services:
 
-  mysql:
-    image: mysql
+  postgres:
+    image: postgres
     environment:
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root_password
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
     volumes:
-      - "./mount-volume/mysql-volume/keycloak-8:/var/lib/mysql"
+      - "./mount-volume/postgresql-volume/keycloak-volume-8:/var/lib/postgresql/data"
     networks:
       - vcer-keycloak-network-8
 

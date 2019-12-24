@@ -1,0 +1,54 @@
+version: "3.7"
+services:
+
+  vcer-mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - vcer-infra-network
+    volumes:
+      - "./mount-volume/mongo-volume:/data/db"
+
+  vcer-zookeeper:
+    image: wurstmeister/zookeeper
+#    ports:
+#      - "2181:2181"
+    networks:
+      - vcer-infra-network
+
+  vcer-kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - target: 9092
+        published: 9092
+        protocol: tcp
+        mode: host
+    environment:
+#      HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+      KAFKA_ZOOKEEPER_CONNECT: vcer-zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      #      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9094,OUTSIDE://_{HOSTNAME_COMMAND}:9092
+#      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://10.206.20.120:9094
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9094,OUTSIDE://localhost:9092
+      KAFKA_LISTENERS: INSIDE://:9094,OUTSIDE://:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CREATE_TOPICS: "tpk-mcCompareCompleted:1:1,\
+      tpk-mcCompareHarvested:1:1,\
+      tpk-csNewTask:3:1,\
+      tpk-csHarvested:1:1,\
+      tpk-csTaskTender:1:1,\
+      tpk-csTaskAssigned:3:1,\
+      tpk-csTaskAccepted:1:1,\
+      tpk-csTaskCompleted:1:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:cached
+    networks:
+      - vcer-infra-network
+
+networks:
+  # this network must be manually created before deploy this compose file.
+  # > docker network create -d overlay --attachable vcer-infra-network
+  vcer-infra-network:
+    name: vcer-infra-network
+    external: true
