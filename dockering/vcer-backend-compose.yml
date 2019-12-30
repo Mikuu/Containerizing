@@ -1,37 +1,39 @@
 version: "3.7"
 services:
 
-  vcer-master:
-    image: sandbox-vcer-master:0.0.1
-    ports:
-      - "8100:8100"
-    networks:
-      - vcer-backend-network
-
-  vcer-slave:
-    image: sandbox-vcer-slave:0.0.1
-    networks:
-      - vcer-backend-network
+#  vcer-master:
+#    image: sandbox-vcer-master:0.0.1
+#    ports:
+#      - "8100:8100"
+#    networks:
+#      - vcer-backend-network
+#
+#  vcer-slave:
+#    image: sandbox-vcer-slave:0.0.1
+#    networks:
+#      - vcer-backend-network
 
   vcer-storage:
     image: sandbox-vcer-storage:0.0.1
     ports:
       - "8102:8102"
     volumes:
-      - type: volume
-        source: vcer-storage-volume
-        target: /vcer-storage
-        consistency: cached
+      - "./mount-volume/vcer-storage:/vcer-storage"
+#      - type: volume
+#        source: vcer-storage-volume
+#        target: /vcer-storage
+#        consistency: cached
     networks:
-      - vcer-backend-network
+      - vcer-infra-network
 
-  vcer-authorizer:
-    image: sandbox-vcer-authorizer:0.0.1
-    networks:
-      - vcer-backend-network
+#  vcer-authorizer:
+#    image: sandbox-vcer-authorizer:0.0.1
+#    networks:
+#      - vcer-backend-network
 
 networks:
-  vcer-backend-network:
-
-volumes:
-  vcer-storage-volume:
+  # this network must be manually created before deploy this compose file.
+  # > docker network create -d overlay --attachable vcer-infra-network
+  vcer-infra-network:
+    name: vcer-infra-network
+    external: true

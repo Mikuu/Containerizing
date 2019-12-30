@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+
+  vcer-slaving:
+    image: sandbox-vcer-slaving-multi-cg:0.0.1
+#    ports:
+#      - "27017:27017"
+    networks:
+      - vcer-infra-network
+
+  vcer-slave:
+    image: sandbox-vcer-slave:0.0.1
+    ports:
+      - "8101:8101"
+    networks:
+      - vcer-infra-network
+#    volumes:
+#      - "./mount-volume/vcer-slave:/usr/src/database"
+
+  vcer-coordinator:
+    image: sandbox-vcer-coordinator-multi-cg:0.0.1
+    ports:
+      - "8110:8110"
+    networks:
+      - vcer-infra-network
+
+networks:
+  # this network must be manually created before deploy this compose file.
+  # > docker network create -d overlay --attachable vcer-infra-network
+  vcer-infra-network:
+    name: vcer-infra-network
+    external: true
