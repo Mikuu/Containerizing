@@ -1,13 +1,13 @@
 version: "3.7"
 services:
 
-#  vcer-master:
-#    image: sandbox-vcer-master:0.0.1
-#    ports:
-#      - "8100:8100"
-#    networks:
-#      - vcer-backend-network
-#
+  vcer-master:
+    image: sandbox-vcer-master:0.0.1
+    ports:
+      - "8100:8100"
+    networks:
+      - vcer-infra-network
+
 #  vcer-slave:
 #    image: sandbox-vcer-slave:0.0.1
 #    networks:
@@ -26,10 +26,10 @@ services:
     networks:
       - vcer-infra-network
 
-#  vcer-authorizer:
-#    image: sandbox-vcer-authorizer:0.0.1
-#    networks:
-#      - vcer-backend-network
+  vcer-authorizer:
+    image: sandbox-vcer-authorizer:0.0.1
+    networks:
+      - vcer-infra-network
 
 networks:
   # this network must be manually created before deploy this compose file.

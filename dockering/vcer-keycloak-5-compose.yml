@@ -10,7 +10,7 @@ services:
     volumes:
       - "./mount-volume/postgresql-volume/keycloak-volume-5:/var/lib/postgresql/data"
     networks:
-      - vcer-keycloak-network-5
+      - vcer-infra-network
 
   vcer-keycloak:
     image: jboss/keycloak:5.0.0
@@ -20,7 +20,9 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Password1
     networks:
-      - vcer-keycloak-network-5
+      - vcer-infra-network
 
 networks:
-  vcer-keycloak-network-5:
+  vcer-infra-network:
+    name: vcer-infra-network
+    external: true
