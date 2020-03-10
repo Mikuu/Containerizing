@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+
+  em-mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - em-network
+    volumes:
+      - "./mount-volume/em-mongodb:/data/db"
+
+  em-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+#    volumes:
+#      - "/Users/Biao/Workspace/Webber/exchange:/exchange"
+    networks:
+      - em-network
+
+networks:
+  # this network must be manually created before deploy this compose file.
+  # > docker network create -d overlay --attachable em-network
+  em-network:
+    name: em-network
+    external: true
