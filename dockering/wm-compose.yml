@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+
+  wm-mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - wm-network
+    volumes:
+      - "./mount-volume/em-mongodb:/data/db"
+
+  wm-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - wm-network
+
+  wm-weasymock:
+    image: ariman/weasy-mock:latest
+    ports:
+      - "7300:7300"
+    networks:
+      - wm-network
+    depends_on:
+      - wm-mongo
+      - wm-redis
+    restart: on-failure
+
+  wm-wadapter:
+    image: ariman/wadapter:latest
+    ports:
+      - "8081:8081"
+      - "9100-9600:9100-9600"
+    networks:
+      - wm-network
+    depends_on:
+      - wm-mongo
+      - wm-redis
+    restart: on-failure
+
+networks:
+  # this network must be manually created before deploy this compose file.
+  # > docker network create -d overlay --attachable wm-network
+  wm-network:
+    name: wm-network
+    external: true
