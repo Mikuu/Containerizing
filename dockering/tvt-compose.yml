@@ -1,0 +1,56 @@
+version: "3.7"
+services:
+
+  vts-mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - vts-network
+    volumes:
+      - "./mount-volume/vts-mongodb:/data/db"
+
+  vts-dashboard:
+    image: ariman/tvt-dashboard:latest
+    ports:
+      - "3001:3001"
+    volumes:
+      - "/Users/ariman/Workspace/share-folder/exchange:/exchange"
+    networks:
+      - vts-network
+
+  vts-slave:
+    image: ariman/tvt-slave:latest
+    ports:
+      - "3002:3002"
+    volumes:
+      - "/Users/ariman/Workspace/share-folder/exchange:/exchange"
+    networks:
+      - vts-network
+
+  vts-exchange:
+    image: ariman/tvt-exchange:latest
+    ports:
+      - "3003:3003"
+    volumes:
+      - "/Users/ariman/Workspace/share-folder/exchange:/exchange"
+    networks:
+      - vts-network
+
+  vts-file-service:
+    image: ariman/tvt-file-service:latest
+    ports:
+      - "8123:8123"
+    volumes:
+      - "/Users/ariman/Workspace/share-folder/exchange:/exchange"
+    networks:
+      - vts-network
+
+
+
+networks:
+  # this network must be manually created before deploy this compose file.
+  # > docker network create -d overlay --attachable vts-network
+  vts-network:
+    name: vts-network
+    external: true
