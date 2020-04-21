@@ -3,12 +3,17 @@ services:
 
   wm-mongo:
     image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mgadmin
+      - MONGO_INITDB_ROOT_PASSWORD=Password1
+      - MONGO_INITDB_DATABASE=weasy-mock
     ports:
       - "27017:27017"
     networks:
       - wm-network
     volumes:
-      - "./mount-volume/em-mongodb:/data/db"
+      - "./mount-volume/mongo-volume/weasy-mock:/data/db"
+      - "./initializer/mongodb/weasy-mock:/docker-entrypoint-initdb.d"
 
   wm-redis:
     image: redis:latest
@@ -19,6 +24,9 @@ services:
 
   wm-weasymock:
     image: ariman/weasy-mock:latest
+    environment:
+      - WM_DB_USERNAME=wm-user
+      - WM_DB_PASSWORD=wm-password
     ports:
       - "7300:7300"
     networks:
@@ -30,6 +38,9 @@ services:
 
   wm-wadapter:
     image: ariman/wadapter:latest
+    environment:
+      - WM_DB_USERNAME=wm-user
+      - WM_DB_PASSWORD=wm-password
     ports:
       - "8081:8081"
       - "9100-9600:9100-9600"
