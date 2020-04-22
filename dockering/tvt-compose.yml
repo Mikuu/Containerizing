@@ -3,15 +3,23 @@ services:
 
   vts-mongodb:
     image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mgadmin
+      - MONGO_INITDB_ROOT_PASSWORD=Password1
+      - MONGO_INITDB_DATABASE=tvt
     ports:
       - "27017:27017"
     networks:
       - vts-network
     volumes:
-      - "./mount-volume/vts-mongodb:/data/db"
+      - "./mount-volume/mongo-volume/vts-mongodb:/data/db"
+      - "./initializer/mongodb/team-visual-test:/docker-entrypoint-initdb.d"
 
   vts-dashboard:
     image: ariman/tvt-dashboard:latest
+    environment:
+      - TVT_DB_USERNAME=tvt-user
+      - TVT_DB_PASSWORD=tvt-password
     ports:
       - "3001:3001"
     volumes:
@@ -21,6 +29,9 @@ services:
 
   vts-slave:
     image: ariman/tvt-slave:latest
+    environment:
+      - TVT_DB_USERNAME=tvt-user
+      - TVT_DB_PASSWORD=tvt-password
     ports:
       - "3002:3002"
     volumes:
