@@ -1,0 +1,36 @@
+version: "3.7"
+services:
+
+  sonarquber:
+    image: sonarqube:latest
+    ports:
+      - "9000:9000"
+    volumes:
+      - "./mount-volume/sonarqube/data:/opt/sonarqube/data"
+      - "./mount-volume/sonarqube/extensions:/opt/sonarqube/extensions"
+      - "./mount-volume/sonarqube/logs:/opt/sonarqube/logs"
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://postgres/sonarqube
+      - SONAR_JDBC_USERNAME=sonarqube
+      - SONAR_JDBC_PASSWORD=Password1
+    networks:
+      - sonarqube-network
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./mount-volume/postgresql-volume/sonarqube:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=sonarqube
+      - POSTGRES_PASSWORD=Password1
+    networks:
+      - sonarqube-network
+
+networks:
+  # this network must be manually created before deploy this compose file.
+  # > docker network create -d overlay --attachable sonarqube-network
+  sonarqube-network:
+    name: sonarqube-network
+    external: true
