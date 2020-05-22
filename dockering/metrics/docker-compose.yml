@@ -1,0 +1,40 @@
+version: "3.7"
+services:
+  cadvisor-svc:
+    image: google/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+      - "/dev/disk/:/dev/disk:ro"
+    networks:
+      - metrics-network
+
+  prometheus-svc:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - metrics-network
+
+  grafana-svc:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - metrics-network
+
+  node-exporter-svc:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    networks:
+      - metrics-network
+
+networks:
+  metrics-network:
