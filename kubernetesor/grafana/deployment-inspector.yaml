@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inspector-deployment
+spec:
+  selector:
+    matchLabels:
+      app: inspector
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: inspector
+    spec:
+      containers:
+        - name: my-k8s-debian
+          image: debian
+          ports:
+            - containerPort: 3000
