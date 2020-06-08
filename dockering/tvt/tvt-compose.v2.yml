@@ -1,7 +1,7 @@
 version: "3.7"
 services:
 
-  vts-mongodb:
+  tvt-mongodb:
     image: mongo:latest
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mgadmin
@@ -10,12 +10,12 @@ services:
     ports:
       - "27017:27017"
     networks:
-      - vts-network
+      - tvt-network
     volumes:
       - "database-volume:/data/db"
       - "./initializer:/docker-entrypoint-initdb.d"
 
-  vts-dashboard:
+  tvt-dashboard:
     image: ariman/tvt-dashboard:latest
 #    image: tvt-dashboard:latest
     environment:
@@ -28,9 +28,9 @@ services:
     volumes:
       - "exchange-volume:/exchange"
     networks:
-      - vts-network
+      - tvt-network
 
-  vts-slave:
+  tvt-slave:
     image: ariman/tvt-slave:latest
 #    image: tvt-slave:latest
     environment:
@@ -43,9 +43,9 @@ services:
     volumes:
       - "exchange-volume:/exchange"
     networks:
-      - vts-network
+      - tvt-network
 
-  vts-exchange:
+  tvt-exchange:
     image: ariman/tvt-exchange:latest
 #    image: tvt-exchange:latest
     environment:
@@ -55,9 +55,9 @@ services:
     volumes:
       - "exchange-volume:/exchange"
     networks:
-      - vts-network
+      - tvt-network
 
-  vts-file-service:
+  tvt-file-service:
     image: ariman/tvt-file-service:latest
 #    image: tvt-file-service:latest
     ports:
@@ -65,11 +65,11 @@ services:
     volumes:
       - "exchange-volume:/exchange"
     networks:
-      - vts-network
+      - tvt-network
 
 volumes:
   database-volume:
   exchange-volume:
 
 networks:
-  vts-network:
+  tvt-network:
